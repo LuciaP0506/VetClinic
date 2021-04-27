@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="vetClinic" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DESKTOP-G8IE43L\SQLEXPRESS;Initial Catalog=vetClinic;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="vetClinicConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Consultations" Member="Consultations">
+    <Type Name="Consultation">
+      <Column Name="IdConsultation" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdVet" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="IdPet" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Recomandation" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="EventDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Consultation_Invoice" Member="Invoices" ThisKey="IdConsultation" OtherKey="IdConsultation" Type="Invoice" />
+      <Association Name="Pet_Consultation" Member="Pet" ThisKey="IdPet" OtherKey="IdPet" Type="Pet" IsForeignKey="true" />
+      <Association Name="Vet_Consultation" Member="Vet" ThisKey="IdVet" OtherKey="IdVet" Type="Vet" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Invoices" Member="Invoices">
+    <Type Name="Invoice">
+      <Column Name="IdInvoice" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdConsultation" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="IdOwner" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="EventDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Consultation_Invoice" Member="Consultation" ThisKey="IdConsultation" OtherKey="IdConsultation" Type="Consultation" IsForeignKey="true" />
+      <Association Name="Owner_Invoice" Member="Owner" ThisKey="IdOwner" OtherKey="IdOwner" Type="Owner" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Owners" Member="Owners">
+    <Type Name="Owner">
+      <Column Name="IdOwner" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Association Name="Owner_Invoice" Member="Invoices" ThisKey="IdOwner" OtherKey="IdOwner" Type="Invoice" />
+      <Association Name="Owner_Pet" Member="Pets" ThisKey="IdOwner" OtherKey="IdOwner" Type="Pet" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Pets" Member="Pets">
+    <Type Name="Pet">
+      <Column Name="IdPet" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Species" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Race" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="IdOwner" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="Pet_Consultation" Member="Consultations" ThisKey="IdPet" OtherKey="IdPet" Type="Consultation" />
+      <Association Name="Owner_Pet" Member="Owner" ThisKey="IdOwner" OtherKey="IdOwner" Type="Owner" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vets" Member="Vets">
+    <Type Name="Vet">
+      <Column Name="IdVet" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Specialization" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Association Name="Vet_Consultation" Member="Consultations" ThisKey="IdVet" OtherKey="IdVet" Type="Consultation" />
+    </Type>
+  </Table>
+</Database>

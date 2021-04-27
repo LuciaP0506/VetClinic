@@ -1,0 +1,59 @@
+﻿@model VetClinic.Models.InvoiceModel
+
+@{
+    ViewBag.Title = "InvoiceDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>InvoiceDetails</h2>
+
+<div>
+    <h4>InvoiceModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IdInvoice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdInvoice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IdConsultation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdConsultation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IdOwner)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdOwner)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.IdInvoice }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

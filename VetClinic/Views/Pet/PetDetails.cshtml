@@ -1,0 +1,67 @@
+﻿@model VetClinic.Models.PetConsultationsViewModel
+
+@{
+    ViewBag.Title = "PetDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>PetDetails</h2>
+
+<div>
+    <h4>PetConsultationsViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Species)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Species)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Race)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Race)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IdOwner)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdOwner)
+        </dd>
+
+    </dl>
+</div>
+<h2>Consultations</h2>
+@foreach(var consultation in Model.consultationList)
+{
+<div>
+
+    <h4>Description</h4>
+    <p>
+        @Html.DisplayFor(item => consultation.Description)
+    </p>
+    <h4>Recomandation</h4>
+    <p>
+        @Html.DisplayFor(item => consultation.Recomandation)
+    </p>
+    <hr />
+
+</div>
+}
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

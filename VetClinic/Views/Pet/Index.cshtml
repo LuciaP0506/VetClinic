@@ -1,0 +1,80 @@
+﻿@model IEnumerable<VetClinic.Models.PetModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm())
+{
+@*    <b>Search Option: </b>
+    @Html.RadioButton("option", "Name")<text>Name</text>
+    @Html.RadioButton("option", "Species")<text>Species</text>
+    @Html.RadioButton("option", "Race")<text>Race</text>
+    @Html.TextBox("search")<input type="submit" name="submit" value="Search" />*@
+    <p>
+        Find by name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+@*    <p>
+        Find by species: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+    <p>
+        Find by race: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>*@
+}
+<table class="table">
+    <tr>
+@*        <th>
+            @Html.DisplayNameFor(model => model.IdPet)
+        </th>*@
+        <th>
+            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Species", "Index", new { sortOrder = ViewBag.SpeciesSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Race", "Index", new { sortOrder = ViewBag.RaceSortParam })
+        </th>
+@*        <th>
+            @Html.DisplayNameFor(model => model.IdOwner)
+        </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPet)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Species)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Race)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdOwner)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdPet }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IdPet }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IdPet })
+            </td>
+        </tr>
+    }
+
+</table>

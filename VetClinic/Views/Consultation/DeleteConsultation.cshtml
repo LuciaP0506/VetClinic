@@ -1,0 +1,65 @@
+﻿@model VetClinic.Models.ConsultationModel
+
+@{
+    ViewBag.Title = "DeleteConsultation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>DeleteConsultation</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ConsultationModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IdConsultation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdConsultation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IdVet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdVet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IdPet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdPet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Recomandation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Recomandation)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
