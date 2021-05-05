@@ -29,7 +29,66 @@ namespace VetClinic.Repository
                 AddDbObjectToModelCollection(vetList, dbVet);
             }
             return vetList;
-        }       
+        }
+
+        public List<VetModel> OrderByDescendingParameter(string parameter)
+        {
+            List<VetModel> vetList = InitializeVetCollection();
+            foreach (Vet dbVet in dbContext.Vets)
+            {
+                AddDbObjectToModelCollection(vetList, dbVet);
+            }
+            if (parameter == "FirstName")
+            {
+                return vetList.OrderByDescending(x => x.FirstName).ToList();
+            }
+            if (parameter == "LastName")
+            {
+                return vetList.OrderByDescending(x => x.LastName).ToList();
+            }
+            if (parameter == "Specialization")
+            {
+                return vetList.OrderByDescending(x => x.Specialization).ToList();
+            }
+            return vetList;
+        }
+
+        public List<VetModel> OrderByParameter(string parameter)
+        {
+            List<VetModel> vetList = InitializeVetCollection();
+            foreach (Vet dbVet in dbContext.Vets)
+            {
+                AddDbObjectToModelCollection(vetList, dbVet);
+            }
+
+            if (parameter == "FirstName")
+            {
+                return vetList.OrderBy(x => x.FirstName).ToList();
+            }
+            if (parameter == "LastName")
+            {
+                return vetList.OrderBy(x => x.LastName).ToList();
+            }
+            if (parameter == "Specialization")
+            {
+                return vetList.OrderBy(x => x.Specialization).ToList();
+            }
+            return vetList;
+        }
+
+        public List<VetModel> SearchString(string parameter)
+        {
+            List<VetModel> vetList = InitializeVetCollection();
+            foreach (Vet dbVet in dbContext.Vets)
+            {
+                AddDbObjectToModelCollection(vetList, dbVet);
+            }
+            if (parameter != null)
+            {
+                return vetList.Where(p => p.FirstName.Contains(parameter) || p.LastName.Contains(parameter)).ToList();
+            }
+            return vetList;
+        }
 
         public VetModel GetVetById(Guid ID)
         {

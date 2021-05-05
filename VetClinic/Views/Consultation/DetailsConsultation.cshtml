@@ -1,11 +1,11 @@
 ﻿@model VetClinic.Models.ConsultationModel
 
 @{
-    ViewBag.Title = "ConsultationDetails";
+    ViewBag.Title = "DetailsConsultation";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ConsultationDetails</h2>
+<h2>DetailsConsultation</h2>
 
 <div>
     <h4>ConsultationModel</h4>
@@ -36,6 +36,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.IdOwner)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdOwner)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Description)
         </dt>
 
@@ -49,6 +57,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.Recomandation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventDate)
         </dd>
 
     </dl>

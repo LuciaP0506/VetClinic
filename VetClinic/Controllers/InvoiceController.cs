@@ -12,10 +12,37 @@ namespace VetClinic.Controllers
     {
         private InvoiceRepository invoiceRepository = new InvoiceRepository();
         // GET: Invoice
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
-            List<InvoiceModel> invoices = invoiceRepository.GetAllInvoices();
-            return View("Index", invoices);
+            ViewBag.IdInvoiceSortParam = string.IsNullOrEmpty(sortOrder) ? "idInvoice_desc" : "";
+            ViewBag.IdOwnerSortParam = sortOrder == "idOwner" ? "idOwner_desc" : "idOwner";
+            ViewBag.EventDateSortParam = sortOrder == "eventDate" ? "eventDate_desc" : "eventDate";
+
+            var invoices = from i in invoiceRepository.GetAllInvoices() select i;
+
+            switch (sortOrder)
+            {
+                case "idInvoice_desc":
+                    invoices = invoiceRepository.OrderByDescendingParameter("IdInvoice");
+                    break;
+                case "idOwner_desc":
+                    invoices = invoiceRepository.OrderByDescendingParameter("IdOwner");
+                    break;
+                case "idOwner":
+                    invoices = invoiceRepository.OrderByParameter("IdOwner");
+                    break;
+                case "eventDate_desc":
+                    invoices = invoiceRepository.OrderByDescendingParameter("EventDate");
+                    break;
+                case "eventDate":
+                    invoices = invoiceRepository.OrderByParameter("EventDate");
+                    break;
+                default:
+                    invoices = invoiceRepository.OrderByParameter("IdInvoice");
+                    break;
+            }
+
+            return View(invoices.ToList());
         }
 
         // GET: Invoice/Details/5

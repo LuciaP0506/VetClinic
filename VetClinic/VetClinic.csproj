@@ -199,6 +199,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VetClinicModelsDataContext.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\DropDownOwnerPet.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -230,6 +231,8 @@
       <LastGenOutput>VetClinicModelsDataContext.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\images\photo1.jpg" />
+    <Content Include="Views\images\photo2.jpg" />
     <None Include="Models\DBObject\VetClinicModelsDataContext.dbml.layout">
       <DependentUpon>VetClinicModelsDataContext.dbml</DependentUpon>
     </None>
@@ -301,8 +304,8 @@
     <Content Include="Views\Pet\PetDetails.cshtml" />
     <Content Include="Views\Owner\OwnerDetails.cshtml" />
     <Content Include="Views\Vet\VetDetails.cshtml" />
-    <Content Include="Views\Consultation\ConsultationDetails.cshtml" />
     <Content Include="Views\Invoice\InvoiceDetails.cshtml" />
+    <Content Include="Views\Consultation\DetailsConsultation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

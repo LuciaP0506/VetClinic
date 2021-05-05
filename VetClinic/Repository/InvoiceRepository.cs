@@ -31,6 +31,51 @@ namespace VetClinic.Repository
             return invoiceList;
         }
 
+        public List<InvoiceModel> OrderByDescendingParameter(string parameter)
+        {
+            List<InvoiceModel> invoiceList = InitializationListCollection();
+            foreach (Invoice dbinvoice in dbContext.Invoices)
+            {
+                AddDbObjectToModelCollection(invoiceList, dbinvoice);
+            }
+            if (parameter == "IdInvoice")
+            {
+                return invoiceList.OrderByDescending(x => x.IdInvoice).ToList();
+            }
+            if (parameter == "IdOwner")
+            {
+                return invoiceList.OrderByDescending(x => x.IdOwner).ToList();
+            }
+            if (parameter == "EventDate")
+            {
+                return invoiceList.OrderByDescending(x => x.EventDate).ToList();
+            }
+            return invoiceList;
+        }
+
+        public List<InvoiceModel> OrderByParameter(string parameter)
+        {
+            List<InvoiceModel> invoiceList = InitializationListCollection();
+            foreach (Invoice dbinvoice in dbContext.Invoices)
+            {
+                AddDbObjectToModelCollection(invoiceList, dbinvoice);
+            }
+
+            if (parameter == "IdInvoice")
+            {
+                return invoiceList.OrderBy(x => x.IdInvoice).ToList();
+            }
+            if (parameter == "IdOwner")
+            {
+                return invoiceList.OrderBy(x => x.IdOwner).ToList();
+            }
+            if (parameter == "EventDate")
+            {
+                return invoiceList.OrderBy(x => x.EventDate).ToList();
+            }
+            return invoiceList;
+        }
+
         public InvoiceModel GetInvoiceById(Guid ID)
         {
             var invoice = dbContext.Invoices.FirstOrDefault(x => x.IdInvoice == ID);

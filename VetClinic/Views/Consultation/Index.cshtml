@@ -12,15 +12,9 @@
 </p>
 <table class="table">
     <tr>
-@*        <th>
-            @Html.DisplayNameFor(model => model.IdConsultation)
-        </th>
         <th>
-            @Html.DisplayNameFor(model => model.IdVet)
+            @Html.ActionLink("IdPet", "Index", new { sortOrder = ViewBag.IdPetSortParam})
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IdPet)
-        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
@@ -28,19 +22,13 @@
             @Html.DisplayNameFor(model => model.Recomandation)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EventDate)
+            @Html.ActionLink("EventDate", "Index", new { sortOrder = ViewBag.EventDateSortParam })
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.IdConsultation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IdVet)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.IdPet)
         </td>

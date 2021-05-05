@@ -12,10 +12,36 @@ namespace VetClinic.Controllers
     {
         private OwnerRepository ownerRepository = new OwnerRepository();
         // GET: Owner
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString)
         {
-            List<OwnerModel> owners = ownerRepository.GetAllOwners();
-            return View("Index", owners);
+            ViewBag.FirstNameSortParam = string.IsNullOrEmpty(sortOrder) ? "firstName_desc" : "";
+            ViewBag.LastNameSortParam = sortOrder == "lastName" ? "lastName_desc" : "lastName";
+
+            var owners = from o in ownerRepository.GetAllOwners() select o;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                owners = ownerRepository.SearchString(searchString);
+            }
+            else
+            {
+                switch (sortOrder)
+                {
+                    case "firstName_desc":
+                        owners = ownerRepository.OrderByDescendingParameter("FirstName");
+                        break;
+                    case "lastName_desc":
+                        owners = ownerRepository.OrderByDescendingParameter("LastName");
+                        break;
+                    case "lastName":
+                        owners = ownerRepository.OrderByParameter("LastName");
+                        break;
+                    default:
+                        owners = ownerRepository.OrderByParameter("FirstName");
+                        break;
+                }                                
+            }
+            return View(owners.ToList());
         }
 
         // GET: Owner/Details/5
@@ -96,5 +122,7 @@ namespace VetClinic.Controllers
                 return View("DeleteOwner");
             }
         }
+
+      
     }
 }

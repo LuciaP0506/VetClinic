@@ -13,19 +13,19 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.IdInvoice)
+            @Html.ActionLink("IdInvoice", "Index", new { sortOrder = ViewBag.IdInvoiceSortParam})
         </th>
         <th>
             @Html.DisplayNameFor(model => model.IdConsultation)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IdOwner)
+            @Html.ActionLink("IdOwner", "Index", new { sortOrder = ViewBag.IdOwnerSortParam })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EventDate)
+            @Html.ActionLink("EventDate", "Index", new { sortOrder = ViewBag.EventDateSortParam })
         </th>
         <th></th>
     </tr>

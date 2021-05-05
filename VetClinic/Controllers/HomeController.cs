@@ -8,7 +8,9 @@ namespace VetClinic.Controllers
 {
     public class HomeController : Controller
     {
-        [Authorize(Roles = "Admin, Owner, Vet")]
+
+
+        [Authorize(Roles = "Admin, Vet")]
         public ActionResult Index()
         {
             return View();

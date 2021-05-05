@@ -17,6 +17,9 @@ namespace VetClinic.Models
         public Guid IdPet { get; set; }
 
         [Required(ErrorMessage = "Mandatory field")]
+        public Guid IdOwner { get; set; }
+
+        [Required(ErrorMessage = "Mandatory field")]
         [StringLength(250, ErrorMessage = "String too long (max 250 chars)")]
         public string Description { get; set; }
 

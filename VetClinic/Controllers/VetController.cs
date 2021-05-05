@@ -12,10 +12,44 @@ namespace VetClinic.Controllers
     {
         private VetRepository vetRepository = new VetRepository();
         // GET: Vet
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString)
         {
-            List<VetModel> vets = vetRepository.GetAllVets();
-            return View("Index", vets);
+            ViewBag.FirstNameSortParam = string.IsNullOrEmpty(sortOrder) ? "firstName_desc" : "";
+            ViewBag.LastNameSortParam = sortOrder == "lastName" ? "lastName_desc" : "lastName";
+            ViewBag.SpecializationSortParam = sortOrder == "specialization" ? "specialization_desc" : "specialization";
+
+            var vets = from v in vetRepository.GetAllVets() select v;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                vets = vetRepository.SearchString(searchString);
+            }
+            else
+            {
+                switch (sortOrder)
+                {
+                    case "firstName_desc":
+                        vets = vetRepository.OrderByDescendingParameter("FirstName");
+                        break;
+                    case "lastName_desc":
+                        vets = vetRepository.OrderByDescendingParameter("LastName");
+                        break;
+                    case "lastName":
+                        vets = vetRepository.OrderByParameter("LastName");
+                        break;
+                    case "specialization_desc":
+                        vets = vetRepository.OrderByDescendingParameter("Specialization");
+                        break;
+                    case "specialization":
+                        vets = vetRepository.OrderByParameter("Specialization");
+                        break;
+                    default:
+                        vets = vetRepository.OrderByParameter("FirstName");
+                        break;
+                }
+            }               
+                       
+            return View(vets.ToList());
         }
 
         // GET: Vet/Details/5
@@ -25,12 +59,14 @@ namespace VetClinic.Controllers
             return View("VetDetails", vetModel);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Vet/Create
         public ActionResult Create()
         {
             return View("CreateVet");
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Vet/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
@@ -49,6 +85,7 @@ namespace VetClinic.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Vet/Edit/5
         public ActionResult Edit(Guid id)
         {
@@ -56,6 +93,7 @@ namespace VetClinic.Controllers
             return View("EditVet", vetModel);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Vet/Edit/5
         [HttpPost]
         public ActionResult Edit(Guid id, FormCollection collection)
@@ -74,6 +112,7 @@ namespace VetClinic.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Vet/Delete/5
         public ActionResult Delete(Guid id)
         {
@@ -82,6 +121,7 @@ namespace VetClinic.Controllers
             return View("DeleteVet", vetModel);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Vet/Delete/5
         [HttpPost]
         public ActionResult Delete(Guid id, FormCollection collection)

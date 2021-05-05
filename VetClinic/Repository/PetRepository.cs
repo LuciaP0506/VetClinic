@@ -77,6 +77,19 @@ namespace VetClinic.Repository
             return petList;
         }
 
+        public List<PetModel> SearchString(string parameter)
+        {
+            List<PetModel> petList = InitializePetCollection();
+            foreach (Pet dbPet in dbContext.Pets)
+            {
+                AddDbObjectToModelCollection(petList, dbPet);
+            }
+            if (parameter != null)
+            {
+                return petList.Where(p => p.Name.Contains(parameter)).ToList();
+            }
+            return petList;
+        }
 
         public PetModel GetPetById(Guid ID)
         {

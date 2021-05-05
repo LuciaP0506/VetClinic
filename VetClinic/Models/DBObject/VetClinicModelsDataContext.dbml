@@ -8,7 +8,9 @@
       <Column Name="Description" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
       <Column Name="Recomandation" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="EventDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IdOwner" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Association Name="Consultation_Invoice" Member="Invoices" ThisKey="IdConsultation" OtherKey="IdConsultation" Type="Invoice" />
+      <Association Name="Owner_Consultation" Member="Owner" ThisKey="IdOwner" OtherKey="IdOwner" Type="Owner" IsForeignKey="true" />
       <Association Name="Pet_Consultation" Member="Pet" ThisKey="IdPet" OtherKey="IdPet" Type="Pet" IsForeignKey="true" />
       <Association Name="Vet_Consultation" Member="Vet" ThisKey="IdVet" OtherKey="IdVet" Type="Vet" IsForeignKey="true" />
     </Type>
@@ -32,6 +34,7 @@
       <Column Name="Phone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="Email" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
       <Column Name="Address" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Association Name="Owner_Consultation" Member="Consultations" ThisKey="IdOwner" OtherKey="IdOwner" Type="Consultation" />
       <Association Name="Owner_Invoice" Member="Invoices" ThisKey="IdOwner" OtherKey="IdOwner" Type="Invoice" />
       <Association Name="Owner_Pet" Member="Pets" ThisKey="IdOwner" OtherKey="IdOwner" Type="Pet" />
     </Type>

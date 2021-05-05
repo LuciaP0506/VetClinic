@@ -31,6 +31,56 @@ namespace VetClinic.Repository
             return ownerList;
         }
 
+        public List<OwnerModel> OrderByDescendingParameter(string parameter)
+        {
+            List<OwnerModel> ownerList = InitializationOwnerCollection();
+            foreach(Owner dbowner in dbContext.Owners)
+            {
+                AddDbObjectToModelCollection(ownerList, dbowner);
+            }
+            if(parameter == "FirstName")
+            {
+                return ownerList.OrderByDescending(x => x.FirstName).ToList();
+            }
+            if (parameter == "LastName")
+            {
+                return ownerList.OrderByDescending(x => x.LastName).ToList();
+            }
+            return ownerList;
+        }
+
+        public List<OwnerModel> OrderByParameter(string parameter)
+        {
+            List<OwnerModel> ownerList = InitializationOwnerCollection();
+            foreach (Owner dbowner in dbContext.Owners)
+            {
+                AddDbObjectToModelCollection(ownerList, dbowner);
+            }
+
+            if (parameter == "FirstName")
+            {
+                return ownerList.OrderBy(x => x.FirstName).ToList();
+            }
+            if (parameter == "LastName")
+            {
+                return ownerList.OrderBy(x => x.LastName).ToList();
+            }
+            return ownerList;
+        }
+
+        public List<OwnerModel> SearchString(string parameter)
+        {
+            List<OwnerModel> ownerList = InitializationOwnerCollection();
+            foreach (Owner dbowner in dbContext.Owners)
+            {
+                AddDbObjectToModelCollection(ownerList, dbowner);
+            }
+            if (parameter != null)
+            {
+                return ownerList.Where(p => p.FirstName.Contains(parameter) || p.LastName.Contains(parameter)).ToList();
+            }
+            return ownerList;
+        }
         public OwnerModel GetOwnerById(Guid ID)
         {
             var owner = dbContext.Owners.FirstOrDefault(x => x.IdOwner == ID);

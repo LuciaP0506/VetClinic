@@ -136,7 +136,11 @@ namespace VetClinic.Models.DBObject
 		
 		private System.DateTime _EventDate;
 		
+		private System.Guid _IdOwner;
+		
 		private EntitySet<Invoice> _Invoices;
+		
+		private EntityRef<Owner> _Owner;
 		
 		private EntityRef<Pet> _Pet;
 		
@@ -158,11 +162,14 @@ namespace VetClinic.Models.DBObject
     partial void OnRecomandationChanged();
     partial void OnEventDateChanging(System.DateTime value);
     partial void OnEventDateChanged();
+    partial void OnIdOwnerChanging(System.Guid value);
+    partial void OnIdOwnerChanged();
     #endregion
 		
 		public Consultation()
 		{
 			this._Invoices = new EntitySet<Invoice>(new Action<Invoice>(this.attach_Invoices), new Action<Invoice>(this.detach_Invoices));
+			this._Owner = default(EntityRef<Owner>);
 			this._Pet = default(EntityRef<Pet>);
 			this._Vet = default(EntityRef<Vet>);
 			OnCreated();
@@ -296,6 +303,30 @@ namespace VetClinic.Models.DBObject
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdOwner", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid IdOwner
+		{
+			get
+			{
+				return this._IdOwner;
+			}
+			set
+			{
+				if ((this._IdOwner != value))
+				{
+					if (this._Owner.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdOwnerChanging(value);
+					this.SendPropertyChanging();
+					this._IdOwner = value;
+					this.SendPropertyChanged("IdOwner");
+					this.OnIdOwnerChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Consultation_Invoice", Storage="_Invoices", ThisKey="IdConsultation", OtherKey="IdConsultation")]
 		public EntitySet<Invoice> Invoices
 		{
@@ -306,6 +337,40 @@ namespace VetClinic.Models.DBObject
 			set
 			{
 				this._Invoices.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Owner_Consultation", Storage="_Owner", ThisKey="IdOwner", OtherKey="IdOwner", IsForeignKey=true)]
+		public Owner Owner
+		{
+			get
+			{
+				return this._Owner.Entity;
+			}
+			set
+			{
+				Owner previousValue = this._Owner.Entity;
+				if (((previousValue != value) 
+							|| (this._Owner.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Owner.Entity = null;
+						previousValue.Consultations.Remove(this);
+					}
+					this._Owner.Entity = value;
+					if ((value != null))
+					{
+						value.Consultations.Add(this);
+						this._IdOwner = value.IdOwner;
+					}
+					else
+					{
+						this._IdOwner = default(System.Guid);
+					}
+					this.SendPropertyChanged("Owner");
+				}
 			}
 		}
 		
@@ -668,6 +733,8 @@ namespace VetClinic.Models.DBObject
 		
 		private string _Address;
 		
+		private EntitySet<Consultation> _Consultations;
+		
 		private EntitySet<Invoice> _Invoices;
 		
 		private EntitySet<Pet> _Pets;
@@ -692,6 +759,7 @@ namespace VetClinic.Models.DBObject
 		
 		public Owner()
 		{
+			this._Consultations = new EntitySet<Consultation>(new Action<Consultation>(this.attach_Consultations), new Action<Consultation>(this.detach_Consultations));
 			this._Invoices = new EntitySet<Invoice>(new Action<Invoice>(this.attach_Invoices), new Action<Invoice>(this.detach_Invoices));
 			this._Pets = new EntitySet<Pet>(new Action<Pet>(this.attach_Pets), new Action<Pet>(this.detach_Pets));
 			OnCreated();
@@ -817,6 +885,19 @@ namespace VetClinic.Models.DBObject
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Owner_Consultation", Storage="_Consultations", ThisKey="IdOwner", OtherKey="IdOwner")]
+		public EntitySet<Consultation> Consultations
+		{
+			get
+			{
+				return this._Consultations;
+			}
+			set
+			{
+				this._Consultations.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Owner_Invoice", Storage="_Invoices", ThisKey="IdOwner", OtherKey="IdOwner")]
 		public EntitySet<Invoice> Invoices
 		{
@@ -861,6 +942,18 @@ namespace VetClinic.Models.DBObject
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_Consultations(Consultation entity)
+		{
+			this.SendPropertyChanging();
+			entity.Owner = this;
+		}
+		
+		private void detach_Consultations(Consultation entity)
+		{
+			this.SendPropertyChanging();
+			entity.Owner = null;
 		}
 		
 		private void attach_Invoices(Invoice entity)

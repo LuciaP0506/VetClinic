@@ -31,6 +31,42 @@ namespace VetClinic.Repository
             return consultationsList;
         }
 
+        public List<ConsultationModel> OrderByDescendingParameter(string parameter)
+        {
+            List<ConsultationModel> consultationsList = InitializeConsultationCollection();
+            foreach (Consultation dbConsultation in dbContext.Consultations)
+            {
+                AddDbObjectToModelCollection(consultationsList, dbConsultation);
+            }
+            if (parameter == "IdPet")
+            {
+                return consultationsList.OrderByDescending(x => x.IdPet).ToList();
+            }
+            if (parameter == "EventDate")
+            {
+                return consultationsList.OrderByDescending(x => x.EventDate).ToList();
+            }
+            return consultationsList;
+        }
+
+        public List<ConsultationModel> OrderByParameter(string parameter)
+        {
+            List<ConsultationModel> consultationsList = InitializeConsultationCollection();
+            foreach (Consultation dbConsultation in dbContext.Consultations)
+            {
+                AddDbObjectToModelCollection(consultationsList, dbConsultation);
+            }
+            if (parameter == "IdPet")
+            {
+                return consultationsList.OrderBy(x => x.IdPet).ToList();
+            }
+            if (parameter == "EventDate")
+            {
+                return consultationsList.OrderBy(x => x.EventDate).ToList();
+            }
+            return consultationsList;
+        }
+
         public ConsultationModel GetConsultationById(Guid ID)
         {
             var consultation = dbContext.Consultations.FirstOrDefault(x => x.IdConsultation == ID);
@@ -74,6 +110,7 @@ namespace VetClinic.Repository
                 dbConsultation.Description = consultation.Description;
                 dbConsultation.Recomandation = consultation.Recomandation;
                 dbConsultation.EventDate = consultation.EventDate;
+                dbConsultation.IdOwner = consultation.IdOwner;
                 dbContext.SubmitChanges();
             }
         }
@@ -110,6 +147,7 @@ namespace VetClinic.Repository
                 consultation.Description = dbConsultation.Description;
                 consultation.Recomandation = dbConsultation.Recomandation;
                 consultation.EventDate = dbConsultation.EventDate;
+                consultation.IdOwner = dbConsultation.IdOwner;
                 return consultation;
             }
             return null;
@@ -127,6 +165,7 @@ namespace VetClinic.Repository
                 dbConsultation.Description = consultation.Description;
                 dbConsultation.Recomandation = consultation.Recomandation;
                 dbConsultation.EventDate = consultation.EventDate;
+                dbConsultation.IdOwner = consultation.IdOwner;
                 return dbConsultation;
             }
             return null;

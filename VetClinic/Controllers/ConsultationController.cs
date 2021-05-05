@@ -11,23 +11,63 @@ namespace VetClinic.Controllers
     public class ConsultationController : Controller
     {
         private ConsultationRepository consultationRepository = new ConsultationRepository();
+        private VetRepository vetRepository = new VetRepository();
+        private PetRepository petRepository = new PetRepository();
+        private OwnerRepository ownerRepository = new OwnerRepository();
         // GET: Consultation
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
-            List<ConsultationModel> consultations = consultationRepository.GetAllConsultations();
-            return View("Index", consultations);
+            ViewBag.IdPetSortParam = string.IsNullOrEmpty(sortOrder) ? "idPet_desc" : "";
+            ViewBag.EventDateSortParam = sortOrder == "eventDate" ? "eventDate_desc" : "eventDate";
+
+            var consultations = from c in consultationRepository.GetAllConsultations() select c;
+
+            switch (sortOrder)
+            {
+                case "idPet_descc":
+                    consultations = consultationRepository.OrderByDescendingParameter("IdPet");
+                    break;
+                case "eventDate_desc":
+                    consultations = consultationRepository.OrderByDescendingParameter("EventDate");
+                    break;
+                case "eventDate":
+                    consultations = consultationRepository.OrderByParameter("EventDate");
+                    break;
+                default:
+                    consultations = consultationRepository.OrderByParameter("IdPet");
+                    break;
+            }
+
+            
+            return View(consultations.ToList());
         }
 
         // GET: Consultation/Details/5
         public ActionResult Details(Guid id)
         {
             ConsultationModel consultationModel = consultationRepository.GetConsultationById(id);
-            return View("ConsultationDetails", consultationModel);
+            return View("DetailsConsultation", consultationModel);
         }
 
         // GET: Consultation/Create
         public ActionResult Create()
         {
+            var itemsVet = vetRepository.GetAllVets();
+            if (itemsVet != null)
+            {
+                ViewBag.dataVet = itemsVet;
+            }
+            var itemsPet = petRepository.GetAllPets();
+            if (itemsPet != null)
+            {
+                ViewBag.dataPet = itemsPet;
+            }
+            var itemsOwner = ownerRepository.GetAllOwners();
+            if (itemsOwner != null)
+            {
+                ViewBag.dataOwner = itemsOwner;
+            }
+
             return View("CreateConsultation");
         }
 
@@ -38,6 +78,9 @@ namespace VetClinic.Controllers
             try
             {
                 ConsultationModel consultationModel = new ConsultationModel();
+                consultationModel.IdVet = Guid.Parse(Request.Form["FirstName"]);
+                consultationModel.IdPet = Guid.Parse(Request.Form["Name"]);
+                consultationModel.IdOwner = Guid.Parse(Request.Form["LastName"]);
                 UpdateModel(consultationModel);
                 consultationRepository.InsertConsultation(consultationModel);
 

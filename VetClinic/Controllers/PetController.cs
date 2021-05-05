@@ -13,6 +13,7 @@ namespace VetClinic.Controllers
     {
         private PetRepository petRepository = new PetRepository();
         private ConsultationRepository consultationRepository = new ConsultationRepository();
+        private OwnerRepository ownerRepository = new OwnerRepository();
 
         [Authorize(Roles = "Admin, Vet")]
         // GET: Pet
@@ -21,37 +22,38 @@ namespace VetClinic.Controllers
             ViewBag.NameSortParam = string.IsNullOrEmpty(sortOrder) ? "name_desc" : ""; 
             ViewBag.SpeciesSortParam = sortOrder == "species" ? "species_desc" : "species";
             ViewBag.RaceSortParam = sortOrder == "races" ? "race_desc" : "races";
-            //var pets = new List<PetModel>();
-           
+            
             var pets = from p in petRepository.GetAllPets() select p;
-           
-            if(!string.IsNullOrEmpty(searchString))
-            {
-                pets = pets.Where(p => p.Name.Contains(searchString));
-            }
-            switch(sortOrder)
-            {
-                case "name_desc":
-                    pets = petRepository.OrderByDescendingParameter("Name");
-                    break;
-                case "species_desc":
-                    pets = petRepository.OrderByDescendingParameter("Species");
-                    break;
-                case "species":
-                    pets = petRepository.OrderByParameter("Species");
-                    break;
-                case "race_desc":
-                    pets = petRepository.OrderByDescendingParameter("Race");
-                    break;
-                case "races":
-                    pets = petRepository.OrderByParameter("Race");
-                    break;
-                default:
-                    pets = petRepository.OrderByParameter("Name");
-                    break;
-            }
 
-           
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                pets = petRepository.SearchString(searchString);
+            }
+            else
+            {
+                switch (sortOrder)
+                {
+                    case "name_desc":
+                        pets = petRepository.OrderByDescendingParameter("Name");
+                        break;
+                    case "species_desc":
+                        pets = petRepository.OrderByDescendingParameter("Species");
+                        break;
+                    case "species":
+                        pets = petRepository.OrderByParameter("Species");
+                        break;
+                    case "race_desc":
+                        pets = petRepository.OrderByDescendingParameter("Race");
+                        break;
+                    case "races":
+                        pets = petRepository.OrderByParameter("Race");
+                        break;
+                    default:
+                        pets = petRepository.OrderByParameter("Name");
+                        break;
+                }
+            }                    
                         
             return View(pets.ToList());
         }
@@ -79,6 +81,11 @@ namespace VetClinic.Controllers
         // GET: Pet/Create
         public ActionResult Create()
         {
+            var items = ownerRepository.GetAllOwners();
+            if (items != null)
+            {
+                ViewBag.data = items;
+            }
             return View("CreatePet");
         }
 
@@ -89,8 +96,9 @@ namespace VetClinic.Controllers
             try
             {
                 PetModel petModel = new PetModel();
+                petModel.IdOwner = Guid.Parse(Request.Form["FirstName"]);
                 UpdateModel(petModel);
-                petRepository.InsertPet(petModel);
+                petRepository.InsertPet(petModel);              
 
                 return RedirectToAction("Index");
             }
@@ -124,8 +132,7 @@ namespace VetClinic.Controllers
                 return View("EditPet");
             }
         }
-
-        [Authorize(Roles = "Admin")]
+        
         // GET: Pet/Delete/5
         public ActionResult Delete(Guid id)
         {
